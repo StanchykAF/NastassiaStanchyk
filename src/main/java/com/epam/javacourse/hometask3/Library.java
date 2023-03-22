@@ -84,7 +84,7 @@ public class Library {
 
     public static void filter(Book[] books, boolean paperback) {
         for (Book book : books) {
-            if((book.isPaperback() && paperback) || (!book.isPaperback() && !paperback)) {
+            if(book.isPaperback() == paperback) {
                 System.out.println(book);
             }
         }
