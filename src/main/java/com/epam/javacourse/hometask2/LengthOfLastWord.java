@@ -10,6 +10,7 @@ public class LengthOfLastWord {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         String string = scan.nextLine();
+        string = string.trim();
         String substring = string.substring(string.lastIndexOf(' ') + 1);
         System.out.println(substring.length());
     }
