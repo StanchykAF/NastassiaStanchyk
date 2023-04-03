@@ -20,7 +20,7 @@ public class Greenhouse implements Informational, Watered, Changeable {
                 i++;
             }
         }
-        return Arrays.copyOf(buf, i);
+        return buf;
     }
 
     public Plant[] getPlantsWithNativeRegion(String region) {
@@ -32,7 +32,7 @@ public class Greenhouse implements Informational, Watered, Changeable {
                 i++;
             }
         }
-        return Arrays.copyOf(buf, i);
+        return buf;
     }
 
     public void buyNewPlant(Plant plant) {
