@@ -8,7 +8,7 @@ public class Greenhouse implements Informational, Watered, Changeable {
     private Plant[] plants;
 
     public Greenhouse(Plant[] plants) {
-        this.plants = Arrays.copyOf(plants, plants.length);
+        this.plants = plants;
     }
 
     public Plant[] getPlantsWithType(String type) {
@@ -38,7 +38,7 @@ public class Greenhouse implements Informational, Watered, Changeable {
     public void buyNewPlant(Plant plant) {
         Plant[] buf = Arrays.copyOf(plants, plants.length + 1);
         buf[plants.length] = plant;
-        this.plants = Arrays.copyOf(buf, buf.length);
+        this.plants = buf;
     }
 
     public void removePlant(Plant plant) {
@@ -50,7 +50,7 @@ public class Greenhouse implements Informational, Watered, Changeable {
                 i++;
             }
         }
-        this.plants = Arrays.copyOf(buf, buf.length);
+        this.plants = buf;
     }
 
     public void setTemperature(float temperature) {
