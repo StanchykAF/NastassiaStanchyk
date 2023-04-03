@@ -2,9 +2,18 @@ package com.epam.javacourse.hometask4;
 
 public class MainClass {
     public static void main(String[] args) {
-        Plant vasya = new Houseplant("Vasya", "sukkulent", "Africa", 14, 10);
-        Plant petya = new Houseplant("Petya", "sukkulent", "Africa", 14, 15);
-        Plant adams = new Shrub("Adams", "rose", "North America", 5);
+        Plant vasya = Houseplant.create()
+                .withType("sukkulent")
+                .withNativeRegion("Africa")
+                .build();
+        Plant petya = Houseplant.create()
+                .withType("sukkulent")
+                .withNativeRegion("Africa")
+                .build();
+        Plant adams = Shrub.create()
+                .withType("rose")
+                .withNativeRegion("North America")
+                .build();
         Plant[] plants = {vasya, petya, adams};
         Greenhouse greenhouse = new Greenhouse(plants);
 
@@ -13,10 +22,15 @@ public class MainClass {
             System.out.println(p);
         }
 
-        greenhouse.buyNewPlant(new FloweringPlant("Fialka", "flower", "Europe", 3, true));
+        greenhouse.buyNewPlant(
+                FloweringPlant.create()
+                .withType("flower")
+                .withNativeRegion("Europe")
+                .build()
+        );
 
         System.out.println();
-        results = greenhouse.getPlantsInTheGreenhouse();
+        results = greenhouse.get();
         for (Plant p: results) {
             System.out.println(p);
         }
@@ -31,7 +45,7 @@ public class MainClass {
         greenhouse.waterPlant(vasya);
 
         System.out.println();
-        results = greenhouse.getPlantsInTheGreenhouse();
+        results = greenhouse.get();
         for (Plant p: results) {
             System.out.println(p);
         }

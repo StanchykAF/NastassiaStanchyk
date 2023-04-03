@@ -6,11 +6,7 @@ public abstract class Plant {
     private String nativeRegion;
     private int daysFromLastWatering;
 
-    public Plant(String name, String type, String nativeRegion, int daysFromLastWatering) {
-        this.name = name;
-        this.type = type;
-        this.nativeRegion = nativeRegion;
-        this.daysFromLastWatering = daysFromLastWatering;
+    public Plant() {
     }
 
     public String getName() {

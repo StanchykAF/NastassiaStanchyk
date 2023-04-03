@@ -4,9 +4,69 @@ public class FloweringPlant extends Plant {
 
     private boolean flowering;
 
-    public FloweringPlant (String name, String type, String nativeRegion, int daysFromLastWatering, boolean flowering){
-        super(name, type, nativeRegion, daysFromLastWatering);
-        this.flowering = flowering;
+    private FloweringPlant() {
+        super();
+    }
+
+    public static class Builder {
+        private String name;
+        private String type;
+        private String nativeRegion;
+        private int daysFromLastWatering;
+        private boolean flowering;
+
+        private Builder() {}
+
+        private Builder(FloweringPlant plant) {
+            this.name = plant.getName();
+            this.type = plant.getType();
+            this.nativeRegion = plant.getNativeRegion();
+            this.daysFromLastWatering = plant.getLastWaterDate();
+            this.flowering = plant.flowering;
+        }
+
+        public Builder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder withType(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder withNativeRegion(String region) {
+            this.nativeRegion = region;
+            return this;
+        }
+
+        public Builder withDaysFromLastWatering(int daysFromLastWatering) {
+            this.daysFromLastWatering = daysFromLastWatering;
+            return this;
+        }
+
+        public Builder isFlowering(boolean flowering) {
+            this.flowering = flowering;
+            return this;
+        }
+
+        public FloweringPlant build() {
+            FloweringPlant plant = new FloweringPlant();
+            plant.setName(name);
+            plant.setType(type);
+            plant.setNativeRegion(nativeRegion);
+            plant.setDaysFromLastWatering(daysFromLastWatering);
+            plant.setFlowering(flowering);
+            return plant;
+        }
+    }
+
+    public Builder edit() {
+        return new Builder(this);
+    }
+
+    public static Builder create() {
+        return new Builder();
     }
 
     public boolean isFlowering() {
