@@ -4,20 +4,20 @@ public class FloweringPlant extends Plant {
 
     private boolean flowering;
 
-    private FloweringPlant() {
+    public FloweringPlant() {
         super();
     }
 
-    public static class Builder {
+    public class Builder {
         private String name;
         private String type;
         private String nativeRegion;
         private int daysFromLastWatering;
         private boolean flowering;
 
-        private Builder() {}
+        public Builder() {}
 
-        private Builder(FloweringPlant plant) {
+        public Builder(FloweringPlant plant) {
             this.name = plant.getName();
             this.type = plant.getType();
             this.nativeRegion = plant.getNativeRegion();
@@ -59,14 +59,6 @@ public class FloweringPlant extends Plant {
             plant.setFlowering(flowering);
             return plant;
         }
-    }
-
-    public Builder edit() {
-        return new Builder(this);
-    }
-
-    public static Builder create() {
-        return new Builder();
     }
 
     public boolean isFlowering() {

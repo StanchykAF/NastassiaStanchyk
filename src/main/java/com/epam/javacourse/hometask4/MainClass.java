@@ -23,10 +23,10 @@ public class MainClass {
         }
 
         greenhouse.buyNewPlant(
-                FloweringPlant.create()
-                .withType("flower")
-                .withNativeRegion("Europe")
-                .build()
+                new FloweringPlant().new Builder()
+                        .withType("flower")
+                        .withNativeRegion("Europe")
+                        .build()
         );
 
         System.out.println();
@@ -49,6 +49,5 @@ public class MainClass {
         for (Plant p: results) {
             System.out.println(p);
         }
-
     }
 }
