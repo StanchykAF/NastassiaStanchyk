@@ -12,27 +12,39 @@ public class Greenhouse implements Informational, Watered, Changeable {
     }
 
     public Plant[] getPlantsWithType(String type) {
-        Plant[] buf = new Plant[plants.length];
-        int i = 0;
-        for (Plant plant : plants) {
-            if (plant.getType().equalsIgnoreCase(type)) {
-                buf[i] = plant;
-                i++;
+        Informational getPlants = new Informational() {
+            @Override
+            public Plant[] get() {
+                Plant[] buf = new Plant[plants.length];
+                int i = 0;
+                for (Plant plant : plants) {
+                    if (plant.getType().equalsIgnoreCase(type)) {
+                        buf[i] = plant;
+                        i++;
+                    }
+                }
+                return buf;
             }
-        }
-        return buf;
+        };
+        return getPlants.get();
     }
 
     public Plant[] getPlantsWithNativeRegion(String region) {
-        Plant[] buf = new Plant[plants.length];
-        int i = 0;
-        for (Plant plant : plants) {
-            if (plant.getNativeRegion().equalsIgnoreCase(region)) {
-                buf[i] = plant;
-                i++;
+        Informational getPlants = new Informational() {
+            @Override
+            public Plant[] get() {
+                Plant[] buf = new Plant[plants.length];
+                int i = 0;
+                for (Plant plant : plants) {
+                    if (plant.getNativeRegion().equalsIgnoreCase(region)) {
+                        buf[i] = plant;
+                        i++;
+                    }
+                }
+                return buf;
             }
-        }
-        return buf;
+        };
+        return getPlants.get();
     }
 
     public void buyNewPlant(Plant plant) {
@@ -57,7 +69,7 @@ public class Greenhouse implements Informational, Watered, Changeable {
         this.temperature = temperature;
     }
 
-    public Plant[] getPlantsInTheGreenhouse() {
+    public Plant[] get() {
         return plants;
     }
 
