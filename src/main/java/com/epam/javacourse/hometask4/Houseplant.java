@@ -80,7 +80,7 @@ public class Houseplant extends Plant {
     @Override
     public String toString() {
         return super.toString() +
-                "{maxHeightInCm=" + maxHeightInCm +
+                " {maxHeightInCm=" + maxHeightInCm +
                 '}';
     }
 }
