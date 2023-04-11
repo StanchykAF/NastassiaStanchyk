@@ -1,60 +1,61 @@
 package com.epam.javacourse.hometask4;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MainClass {
+
+    private static Path path = Path.of("./src/main/resources/Greenhouse.txt");
+    private static String optionDoesNotExistMessage = "That option does not exist.";
+    private static String noPlantsMessage = "No plants in the greenhouse. Add first.";
     public static void main(String[] args) {
 
-        String menu = "1 - Add a new plant\n" +
-                "2 - Remove a plant\n" +
-                "3 - Find a plant\n" +
-                "4 - Quit\n";
+        String mainMenu = """
+                
+                1 - Add a new plant
+                2 - Remove a plant
+                3 - Find a plant
+                4 - Quit
+                
+                Please, enter your option:""";
 
         Scanner scanner = new Scanner(System.in);
         Greenhouse greenhouse = new Greenhouse();
-        MainClass mainClass = new MainClass();
-        Path path = Path.of("./src/main/resources/Greenhouse.txt");
-        System.out.println(menu + "Please, enter your option: ");
+        System.out.println(mainMenu);
         while (scanner.hasNext()) {
             try {
                 switch (scanner.nextInt()) {
                     case 1:
-                        mainClass.addANewPlant(scanner, greenhouse);
-                        try {
-                            Files.write(path, greenhouse.toString().getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
-                        } catch (IOException e) {
-                            throw new RuntimeException();
-                        }
+                        addANewPlant(scanner, greenhouse);
+                        writeToFile(greenhouse);
                         break;
                     case 2:
-                        mainClass.removeAPlant(scanner, greenhouse);
-                        try {
-                            Files.write(path, greenhouse.toString().getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
-                        } catch (IOException e) {
-                            throw new RuntimeException();
-                        }
+                        removeAPlant(scanner, greenhouse);
+                        writeToFile(greenhouse);
                         break;
                     case 3:
-                        mainClass.findAPlant(scanner, greenhouse);
+                        findAPlant(scanner, greenhouse);
                         break;
                     case 4:
+                        scanner.close();
                         return;
                     default:
                         throw new IllegalOptionException();
                 }
-            } catch (IllegalOptionException e) {
-                e.printStackTrace();
-                System.err.println("That option does not exist.");
+            } catch (IllegalOptionException | InputMismatchException e) {
+                System.err.println(optionDoesNotExistMessage);
+                scanner.nextLine();
             }
-            System.out.println(menu + "Please, enter your option: ");
+            System.out.println(mainMenu);
         }
     }
 
-    private void addANewPlant(Scanner sc, Greenhouse gr) {
+    private static void addANewPlant(Scanner sc, Greenhouse gr) {
         sc.nextLine();
         System.out.println("Enter plant name: ");
         String name = sc.nextLine();
@@ -69,13 +70,12 @@ public class MainClass {
                 .build());
     }
 
-    private void removeAPlant(Scanner sc, Greenhouse gr) {
+    private static void removeAPlant(Scanner sc, Greenhouse gr) {
         Plant[] res;
         try {
             res = gr.get();
         } catch (EmptyArrayException e) {
-            e.printStackTrace();
-            System.err.println("No plants to remove");
+            System.err.println(noPlantsMessage);
             return;
         }
         System.out.println("You have following plants in the greenhouse: ");
@@ -83,14 +83,20 @@ public class MainClass {
             System.out.println(i + ": " + res[i]);
         }
         System.out.println("Choose number of plant you want to remove: ");
+        try {
             gr.removePlant(res[sc.nextInt()]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println(optionDoesNotExistMessage);
+        }
     }
 
-    private void findAPlant(Scanner sc, Greenhouse gr) {
+    private static void findAPlant(Scanner sc, Greenhouse gr) {
         Plant[] res;
-        String menu = "1 - by type\n" +
-                "2 - by native region\n";
-        System.out.println("Choose parameter for searching: \n" + menu);
+        String menu = """
+                Choose parameter for searching:
+                1 - by type
+                2 - by native region""";
+        System.out.println(menu);
         try {
             switch (sc.nextInt()) {
                 case 1:
@@ -99,7 +105,7 @@ public class MainClass {
                     try {
                         res = gr.getPlantsWithType(sc.nextLine());
                     } catch (EmptyArrayException e) {
-                        System.out.println("No plants in the greenhouse. Add first");
+                        System.err.println(noPlantsMessage);
                         return;
                     }
                     for (Plant p : res) {
@@ -112,7 +118,7 @@ public class MainClass {
                     try {
                         res = gr.getPlantsWithNativeRegion(sc.nextLine());
                     } catch (EmptyArrayException e) {
-                        System.out.println("No plants in the greenhouse. Add first");
+                        System.err.println(noPlantsMessage);
                         return;
                     }
                     for (Plant p : res) {
@@ -122,9 +128,17 @@ public class MainClass {
                 default:
                     throw new IllegalOptionException();
             }
-        } catch (IllegalOptionException e) {
-            e.printStackTrace();
-            System.err.println("That option does not exist.");
+        } catch (IllegalOptionException | InputMismatchException e) {
+            System.err.println(optionDoesNotExistMessage);
+            sc.nextLine();
+        }
+    }
+
+    private static void writeToFile(Greenhouse gr) {
+        try (BufferedWriter writer = Files.newBufferedWriter(path, StandardOpenOption.TRUNCATE_EXISTING)) {
+            writer.write(gr.toString());
+        } catch (IOException e) {
+            System.err.println("Can't write to the file");
         }
     }
 }
