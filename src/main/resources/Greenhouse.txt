@@ -1,0 +1,2 @@
+Plants in the Greenhouse:
+[Plant{name='petya', type='kaktus', native region='Africa', day(s) from last watering=0} {maxHeightInCm=0}]

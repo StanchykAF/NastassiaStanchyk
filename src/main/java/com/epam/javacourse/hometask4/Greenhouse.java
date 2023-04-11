@@ -7,14 +7,18 @@ public class Greenhouse implements Informational, Watered, Changeable {
     private float temperature;
     private Plant[] plants;
 
+    public Greenhouse() {}
     public Greenhouse(Plant[] plants) {
         this.plants = plants;
     }
 
-    public Plant[] getPlantsWithType(String type) {
+    public Plant[] getPlantsWithType(String type) throws EmptyArrayException {
         Informational getPlants = new Informational() {
             @Override
-            public Plant[] get() {
+            public Plant[] get() throws EmptyArrayException {
+                if (plants == null) {
+                    throw new EmptyArrayException();
+                }
                 Plant[] buf = new Plant[plants.length];
                 int i = 0;
                 for (Plant plant : plants) {
@@ -26,13 +30,16 @@ public class Greenhouse implements Informational, Watered, Changeable {
                 return buf;
             }
         };
-        return getPlants.get();
+            return getPlants.get();
     }
 
-    public Plant[] getPlantsWithNativeRegion(String region) {
+    public Plant[] getPlantsWithNativeRegion(String region) throws EmptyArrayException {
         Informational getPlants = new Informational() {
             @Override
-            public Plant[] get() {
+            public Plant[] get() throws EmptyArrayException {
+                if (plants == null) {
+                    throw new EmptyArrayException();
+                }
                 Plant[] buf = new Plant[plants.length];
                 int i = 0;
                 for (Plant plant : plants) {
@@ -44,13 +51,17 @@ public class Greenhouse implements Informational, Watered, Changeable {
                 return buf;
             }
         };
-        return getPlants.get();
+            return getPlants.get();
     }
 
     public void buyNewPlant(Plant plant) {
-        Plant[] buf = Arrays.copyOf(plants, plants.length + 1);
-        buf[plants.length] = plant;
-        this.plants = buf;
+        if (this.plants == null) {
+            this.plants = new Plant[] {plant};
+        } else {
+            Plant[] buf = Arrays.copyOf(plants, plants.length + 1);
+            buf[plants.length] = plant;
+            this.plants = buf;
+        }
     }
 
     public void removePlant(Plant plant) {
@@ -69,12 +80,21 @@ public class Greenhouse implements Informational, Watered, Changeable {
         this.temperature = temperature;
     }
 
-    public Plant[] get() {
+    public Plant[] get() throws EmptyArrayException {
+        if (plants == null) {
+            throw new EmptyArrayException();
+        }
         return plants;
     }
 
     public void waterPlant(Plant plant) {
         plant.setDaysFromLastWatering(0);
         System.out.println("The plant " + plant.getName() + " was watered");
+    }
+
+    @Override
+    public String toString() {
+        return "Plants in the Greenhouse:\n" +
+                 Arrays.toString(plants);
     }
 }
