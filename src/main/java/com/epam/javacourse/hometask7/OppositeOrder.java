@@ -31,11 +31,8 @@ public class OppositeOrder {
 
     private static void writeToFile(List<String> lines) {
         Collections.reverse(lines);
-        try(BufferedWriter writer = Files.newBufferedWriter(PATH, StandardOpenOption.TRUNCATE_EXISTING)) {
-            for (String line : lines) {
-                writer.write(line);
-                writer.newLine();
-            }
+        try {
+            Files.write(PATH, lines);
         } catch (IOException e) {
             throw new RuntimeException("Can't write to file");
         }
