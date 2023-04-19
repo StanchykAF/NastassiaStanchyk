@@ -15,7 +15,7 @@ public class UniqueWordsOccurrence {
         Map<String, Integer> wordCounts = new HashMap<>();
         try(Scanner scanner = new Scanner(file)) {
             while (scanner.hasNext()) {
-                String word = scanner.next().toLowerCase().replaceAll("[^a-zA-Z0-9]", "");
+                String word = scanner.next().toLowerCase().replaceAll("[^a-z0-9-]", "");
                 if (wordCounts.containsKey(word)) {
                     wordCounts.put(word, wordCounts.get(word) + 1);
                 } else {

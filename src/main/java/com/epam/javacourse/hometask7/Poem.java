@@ -24,12 +24,7 @@ public class Poem {
                 "Well, tell me who's perfect anyway."
         );
 
-        Collections.sort(poem, new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return o1.length() - o2.length();
-            }
-        });
+        poem.sort(Comparator.comparingInt(String::length));
 
         for (String s : poem) {
             System.out.println(s.length() + ": " + s);

@@ -16,7 +16,7 @@ public class UniqueWords {
         Set<String> uniqueWords = new HashSet<>();
         try(Scanner scanner = new Scanner(file)) {
             while (scanner.hasNext()) {
-                String word = scanner.next().toLowerCase().replaceAll("[^a-zA-Z0-9]", "");
+                String word = scanner.next().toLowerCase().replaceAll("[^a-z0-9-]", "");
                 uniqueWords.add(word);
             }
         } catch (FileNotFoundException e) {
