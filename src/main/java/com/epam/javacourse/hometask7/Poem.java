@@ -25,9 +25,6 @@ public class Poem {
         );
 
         poem.sort(Comparator.comparingInt(String::length));
-
-        for (String s : poem) {
-            System.out.println(s.length() + ": " + s);
-        }
+        poem.forEach(s -> System.out.println(s.length() + ": " + s));
     }
 }
