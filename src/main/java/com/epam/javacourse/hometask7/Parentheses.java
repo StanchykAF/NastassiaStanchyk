@@ -1,6 +1,7 @@
 package com.epam.javacourse.hometask7;
 
 import java.util.Stack;
+import java.util.stream.Collector;
 
 /*
 In a string with "(" and ")" only check if parentheses are placed correctly.
@@ -17,17 +18,12 @@ public class Parentheses {
     }
 
     private static boolean checkParentheses(String parenthesesString) {
-        Stack<Character> parenthesesStack = new Stack<>();
-        for (int i = 0; i < parenthesesString.length(); i++) {
-            char ch = parenthesesString.charAt(i);
-            if (ch == '(') {
-                parenthesesStack.push(ch);
-            } else if (ch == ')') {
-                if (parenthesesStack.isEmpty() || parenthesesStack.pop() != '(') {
-                    return false;
-                }
-            }
-        }
-        return parenthesesStack.isEmpty();
+        int open = parenthesesString.chars().filter(c -> c == '(')
+                        .mapToObj(c -> (char) c)
+                        .toList().size();
+        int close = parenthesesString.chars().filter(c -> c == ')')
+                        .mapToObj(c -> (char) c)
+                        .toList().size();
+        return open == close;
     }
 }
