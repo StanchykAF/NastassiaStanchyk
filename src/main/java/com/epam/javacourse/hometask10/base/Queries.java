@@ -1,7 +1,5 @@
 package com.epam.javacourse.hometask10.base;
 
-import com.epam.javacourse.hometask10.base.models.Gardener;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,11 +11,11 @@ public class Queries {
         String sql = """
                 SELECT * FROM plants LEFT JOIN (greenhouses, gardeners)
                 ON (greenhouses.id = plants.greenhouse_id AND gardeners.id = greenhouses.gardener_id)
-                ORDER BY plants.id;""";
+                ORDER BY plants.id""";
         try (Statement statement = ConnectionManager.getConnection().createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                System.out.printf("%d, %s, %s, %d, %d, %s, %d, %d, %s%n",
+                System.out.printf("%-5d%-20s%-20s%-5d%-5d%-20s%-5d%-5d%-20s%n",
                         resultSet.getInt(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
@@ -28,6 +26,7 @@ public class Queries {
                         resultSet.getInt(8),
                         resultSet.getString(9));
             }
+            resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException();
@@ -44,13 +43,14 @@ public class Queries {
                                        SELECT COUNT(id) FROM greenhouses
                                        UNION ALL
                                        SELECT COUNT(id) FROM gardeners
-                                   ) AS counts;""";
+                                   ) AS counts""";
         int result = 0;
         try (Statement statement = ConnectionManager.getConnection().createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
                 result = resultSet.getInt(1);
             }
+            resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException();
@@ -64,15 +64,16 @@ public class Queries {
         String sql = """
                 SELECT greenhouse_id, COUNT(id) AS plants_count
                 FROM plants
-                GROUP BY greenhouse_id;""";
+                GROUP BY greenhouse_id""";
         List<String> result = new ArrayList<>();
         try (Statement statement = ConnectionManager.getConnection().createStatement()) {
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                result.add(String.format("%d, %d%n",
-                        resultSet.getInt(1),
-                        resultSet.getInt(2)));
+                result.add(String.format("%-5d%-5d%n",
+                        resultSet.getInt("greenhouse_id"),
+                        resultSet.getInt("plants_count")));
             }
+            resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException();
