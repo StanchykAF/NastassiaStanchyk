@@ -1,0 +1,74 @@
+CREATE TABLE gardeners (
+    id INT NOT NULL AUTO_INCREMENT,
+    name CHAR(30) NULL DEFAULT NULL,
+    PRIMARY KEY (id)
+) ENGINE=INNODB;
+
+CREATE TABLE greenhouses (
+    id INT NOT NULL AUTO_INCREMENT,
+    name CHAR(30) NULL DEFAULT NULL,
+    gardener_id INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (gardener_id)
+        REFERENCES gardeners(id)
+) ENGINE=INNODB;
+
+CREATE TABLE plants (
+    id INT NOT NULL AUTO_INCREMENT,
+    name CHAR(30) NULL DEFAULT NULL,
+    type CHAR(30) NULL DEFAULT NULL,
+    greenhouse_id INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (greenhouse_id)
+        REFERENCES greenhouses(id)
+) ENGINE=INNODB;
+
+INSERT INTO gardeners
+VALUES (1, 'Dan Kran');
+
+INSERT INTO greenhouses
+VALUES (1, 'First', 1);
+
+INSERT INTO plants
+VALUES (1, 'vasya', 'kaktus', 1);
+
+INSERT INTO plants (type, greenhouse_id)
+VALUES ('kaktus', 1);
+
+UPDATE plants
+SET name = 'nikita'
+WHERE name IS NULL;
+
+DELETE FROM plants
+WHERE name = 'vasya';
+
+TRUNCATE TABLE plants;
+
+SELECT * FROM plants
+WHERE id BETWEEN 2 AND 4;
+
+SELECT * FROM plants
+WHERE name LIKE 'v%';
+
+SELECT * FROM plants
+WHERE type IN ('kaktus', 'flower');
+
+SELECT * FROM plants LEFT JOIN (greenhouses, gardeners)
+ON (greenhouses.id = plants.greenhouse_id AND gardeners.id = greenhouses.gardener_id)
+ORDER BY plants.id;
+
+SELECT COUNT(*) AS count_plants,
+(SELECT COUNT(*) FROM greenhouses) AS count_grenhouses,
+(SELECT COUNT(*) FROM gardeners) AS count_gardeners FROM plants;
+
+SELECT SUM(total_count) AS total_count FROM (
+    SELECT COUNT(id) AS total_count FROM plants
+    UNION ALL
+    SELECT COUNT(id) FROM greenhouses
+    UNION ALL
+    SELECT COUNT(id) FROM gardeners
+) AS counts;
+
+SELECT greenhouse_id, COUNT(id) AS plants_count
+FROM plants
+GROUP BY greenhouse_id;
